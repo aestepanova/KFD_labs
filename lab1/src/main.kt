@@ -1,3 +1,4 @@
+import java.io.File
 import kotlin.math.max
 
 /*Реализуйте бинарное дерево поиска для целых чисел. Программа получает на вход
@@ -39,6 +40,14 @@ class Node<T>(val value: T){
         rightChild?.traverseInOrder(visit)
     }
 
+    fun returnParents(visit: Visitor<T>){
+        leftChild?.returnParents(visit)
+        if (leftChild != null && rightChild != null){
+            visit(value)
+        }
+        rightChild?.returnParents(visit)
+    }
+
     fun traversePreOrder(visit: Visitor<T>) {
         visit(value)
         leftChild?.traversePreOrder(visit)
@@ -50,6 +59,7 @@ class Node<T>(val value: T){
         rightChild?.traversePostOrder(visit)
         visit(value)
     }
+
     fun height(node: Node<T>? = this): Int {
         return node?.let { 1 + max(height(node.leftChild), height(node.rightChild)) } ?: -1
     }
@@ -62,7 +72,7 @@ class BinarySearchTree<T: Comparable<T>>() {
     override fun toString() = root?.toString() ?: "empty tree"
 
     fun insert(value: T) {
-        root = insert(root, value)
+        if (value!=0) root = insert(root, value)
     }
     private fun insert(
         node: Node<T>?,
@@ -96,43 +106,42 @@ class BinarySearchTree<T: Comparable<T>>() {
         return false
     }
 
-
 }
 
 
-
-fun add(table: Array<Int>, key: Int){
-    if (!search(table, key)){
-
+fun readFile(tree: BinarySearchTree<Int>): BinarySearchTree<Int>{
+    println("Please, enter name of a file: ")
+    val fn = readLine()!!
+    for (line in File(fn).readLines()) {
+        val node = line.toInt()
+        tree.insert(node)
     }
+    return tree
 }
-
-
-fun search(table: Array<Int>, key: Int): Boolean {
-    val n = table.size
-    for (i in 0..n){
-        println(i)
-    }
-    return false
-}
-
 
 fun main() {
     val myTree = BinarySearchTree<Int>()
-    var el: Int = 1
+    var el = 1
     println("Enter your nodes ---> ")
-    do{
+    do {
         try {
             el = readLine()!!.toInt()
-            myTree.apply(){insert(el)}
-        }catch (e: NumberFormatException){
+            myTree.apply { insert(el) }
+        } catch (e: NumberFormatException) {
             println("Program raised an exception" + e.message)
         }
-    }while (el != 0)
+    } while (el != 0)
+    //readFile(myTree)
 
     println(myTree)
 
+    myTree.root?.traverseInOrder { println(it) }
 
-
+    println()
+    val nodes = arrayListOf<Int>()
+    myTree.root?.returnParents {nodes.add(it)}
+    for ((i, each) in nodes.withIndex()){
+        println("[$i] = $each")
+    }
 }
 

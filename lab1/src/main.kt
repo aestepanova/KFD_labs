@@ -66,6 +66,12 @@ class Node<T>(val value: T){
 }
 
 
+class test<U, V>(uvalue: U, vValue: V){
+    var one = uvalue
+    var two = vValue
+    fun info() = println(this.one.toString() + "\n${this.two}")
+}
+
 
 class BinarySearchTree<T: Comparable<T>>() {
     var root: Node<T>? = null
@@ -122,16 +128,16 @@ fun readFile(tree: BinarySearchTree<Int>): BinarySearchTree<Int>{
 fun main() {
     val myTree = BinarySearchTree<Int>()
     var el = 1
-    println("Enter your nodes ---> ")
-    do {
-        try {
-            el = readLine()!!.toInt()
-            myTree.apply { insert(el) }
-        } catch (e: NumberFormatException) {
-            println("Program raised an exception" + e.message)
-        }
-    } while (el != 0)
-    //readFile(myTree)
+//    println("Enter your nodes ---> ")
+//    do {
+//        try {
+//            el = readLine()!!.toInt()
+//            myTree.apply { insert(el) }
+//        } catch (e: NumberFormatException) {
+//            println("Program raised an exception" + e.message)
+//        }
+//    } while (el != 0)
+    readFile(myTree)
 
     println(myTree)
 
@@ -143,5 +149,8 @@ fun main() {
     for ((i, each) in nodes.withIndex()){
         println("[$i] = $each")
     }
+
+    val a = test<Int, Double>(6, 7.0)
+    a.info()
 }
 

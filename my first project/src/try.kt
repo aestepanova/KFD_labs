@@ -1,14 +1,25 @@
-fun baby(vararg sm: Int){
-    val rep = '1'
-    val toto = 21324
-    println(rep.toString()+toto.toString())
-    println(toto+rep.toInt())
+fun findPrice(old: Int = 5, passed: Int = 100000, speed: Int = 120, auto: Int = 0) : Int {
 
-    for(it in sm){
-        println(it)
-    }
+    var price = 20000
+    price -= 2000 * old
+    price += (speed - 120) * 100
+    price -= 200 * (passed / 10000)
+    if (auto == 1) price += 1500
+
+    return price
 }
 
-fun main(){
-    baby(456, 654, 5555, 111)
+
+
+fun main(args: Array<String>) {
+    val parameter = readLine()!!
+    val num = readLine()!!.toInt()
+
+    when (parameter) {
+        "old" -> println(findPrice(old = num))
+        "passes" -> println(findPrice(passed = num))
+        "speed" -> println(findPrice(speed = num))
+        "auto" -> println(findPrice(auto = num))
+    }
+
 }
